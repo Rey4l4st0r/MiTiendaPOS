@@ -20,7 +20,7 @@ namespace MiTiendaPOS.Data
 
         public MiTiendaPOSContext() { }
 
-        public MiTiendaPOSContext(DbContextOptions<MiTiendaPOSContext>options)
+        public MiTiendaPOSContext(DbContextOptions<MiTiendaPOSContext> options)
             : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -33,6 +33,9 @@ namespace MiTiendaPOS.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Nombre real de la tabla en SQL Server (el DbSet se sigue llamando DetallesVenta)
+            modelBuilder.Entity<DetalleVenta>().ToTable("DetalleVentas");
+
             modelBuilder.Entity<Producto>()
                 .HasOne(p => p.Categoria)
                 .WithMany(c => c.Productos)
@@ -73,8 +76,15 @@ namespace MiTiendaPOS.Data
                 new Usuario { Id = 1, NombreUsuario = "amin", Rol = "Administrador" });
 
             modelBuilder.Entity<Producto>().HasData(
-                new Producto { Id = 1, Nombre = "Soda 600ml", CategoriaId=1,
-                PrecioUnitario=0.90m, Stock=48, Activo=true},
+                new Producto
+                {
+                    Id = 1,
+                    Nombre = "Soda 600ml",
+                    CategoriaId = 1,
+                    PrecioUnitario = 0.90m,
+                    Stock = 48,
+                    Activo = true
+                },
                 new Producto
                 {
                     Id = 2,
@@ -124,7 +134,7 @@ namespace MiTiendaPOS.Data
                 new Cliente { Id = 1, Nombre = "COnsumidor Final" },
                 new Cliente { Id = 2, Nombre = "María Lopez", Telefono = "7000-0000" });
             modelBuilder.Entity<Usuario>().HasData(
-                new Usuario { Id=2, NombreUsuario="cajero1", Rol="Cajero"});
+                new Usuario { Id = 2, NombreUsuario = "cajero1", Rol = "Cajero" });
         }
     }
 }

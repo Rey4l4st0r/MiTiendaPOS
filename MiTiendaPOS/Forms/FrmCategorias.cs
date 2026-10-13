@@ -78,7 +78,7 @@ namespace MiTiendaPOS.Forms
                 };
                 if (_idSeleccionado == 0)
                     _servicio.Crear(categoria);
-                        
+
                 else
                     _servicio.Actualizar(categoria);
                 MessageBox.Show("Categoria guardada cone exito,", "MiTIendaPOS",
@@ -93,6 +93,30 @@ namespace MiTiendaPOS.Forms
                      MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 CargarCategorias();
             }
+        }
+
+        private void btnEliminar_Click(object sender, EventArgs e)
+        {
+            if(_idSeleccionado == 0) return;
+
+            var respuestas = MessageBox.Show($"¿Está seguro de que desea eliminar esta categoría'{txtNombre.Text}'?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (respuestas != DialogResult.Yes) return;
+
+            try
+            {   _servicio.Eliminar(_idSeleccionado);
+                MessageBox.Show("Categoria eliminada con exito", "MiTiendaPOS",
+                 MessageBoxButtons.OK, MessageBoxIcon.Information);
+                CargarCategorias();
+                LimpiarFormulario();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Error al eliminar categoria",
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                CargarCategorias();
+            
+            }
+
         }
     }
 }
